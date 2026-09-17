@@ -31,7 +31,13 @@ export type RepositoryReport = {
       status: string;
       date: string;
     }>;
+    issues: Array<{ number: number; title: string; author: string; status: string; date: string }>;
+    issuesError: string | null;
+    collaborators: Array<{ login: string; role: string }>;
+    collaboratorsError: string | null;
+    collaboratorsHasMore: boolean;
     languages: Record<string, number>;
+    tree: Array<{ path: string; type: string }>;
     folders: Array<{ name: string; files: number }>;
   };
   

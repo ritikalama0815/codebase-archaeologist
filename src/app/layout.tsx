@@ -12,7 +12,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-      <body>{children}</body>
-    
-  );
+    <html><body>{children}</body></html>
+      
+    );
 }

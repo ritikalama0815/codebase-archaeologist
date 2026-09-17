@@ -1,1 +1,246 @@
+/** Global styles  */
 @import "tailwindcss";
+
+:root { 
+    --ink:#17171d; 
+    --muted:#777784;
+    --line:#e8e7ee; 
+    --paper:#303031; 
+    --violet:#fbbdff; }
+
+* { 
+    box-sizing:border-box;
+}
+
+html { 
+    scroll-behavior:smooth; 
+}
+body { 
+    margin:0; 
+    background:var(--paper);
+    color:var(--ink); 
+    font-family:Arial, Helvetica, sans-serif; 
+}
+button, input, textarea { 
+    font:inherit; 
+}
+button { 
+    cursor:pointer; color:inherit; 
+}
+
+/* App frame: fixed navigation, report column, and assistant column. */
+.app { 
+    min-height:100vh; 
+    padding:66px 348px 0 242px; 
+    background:linear-gradient(90deg, #929292 0 242px, var(--paper) 242px); 
+}
+.topbar { 
+    position:fixed; 
+    z-index:10; 
+    inset:0 0 auto; 
+    height:66px; 
+    display:flex; 
+    align-items:center; 
+    justify-content:space-between; 
+    padding:0 22px; 
+    background:rgba(255,255,255,.92); 
+    border-bottom:1px solid var(--line); 
+    backdrop-filter:blur(15px); 
+}
+.brand, .top-actions, 
+.header-link, .top-center, 
+.crumb, .sidebar-cta, 
+.analyze-button, 
+.download, 
+.chat-context, 
+.small-note { 
+    display:flex; 
+    align-items:center; 
+}
+
+.brand {
+     gap:7px; 
+     color:var(--ink); 
+     text-decoration:none; 
+     font-size:12px; 
+     font-weight:800; 
+     letter-spacing:.12em; 
+}
+.brand b { 
+    color:var(--violet); 
+}
+.brand-glyph { 
+    display:grid; 
+    width:27px; 
+    height:27px; 
+    place-items:center; 
+    border-radius:8px; 
+    color:#fff; 
+    background:var(--ink); 
+}
+.top-center { 
+    position:absolute; 
+    left:50%; 
+    transform:translateX(-50%);
+     gap:7px; 
+     color:var(--muted); 
+     font-size:11px; 
+    }
+.live-dot, .pulse { 
+    width:7px;
+    height:7px; 
+    border-radius:50%; 
+    background:#22b573; 
+    box-shadow:0 0 0 3px #e5f8ee; 
+}
+.top-actions { gap:14px; }
+.header-link, .text-button { 
+    gap:6px; 
+    border:0; 
+    background:none; 
+    font-size:11px; 
+    font-weight:700;
+ }
+.avatar { 
+    width:31px; height:31px; border:0; border-radius:50%; color:#fff; background:#201d36; font-size:10px; }
+
+/* Left navigation. */
+.sidebar { position:fixed; z-index:5; top:66px; bottom:0; left:0; width:242px; display:flex; flex-direction:column; padding:13px 11px; border-right:1px solid var(--line); background:#fff; }
+.repo-picker { display:grid; grid-template-columns:30px 1fr 16px; gap:9px; align-items:center; padding:10px; border:1px solid var(--line); border-radius:9px; background:#fff; text-align:left; }
+.repo-logo { display:grid; width:30px; height:30px; place-items:center; border-radius:7px; color:#fff; background:#151515; font:700 16px Georgia, serif; }
+.repo-picker strong, .repo-picker small, .access-card strong, .access-card small { display:block; }
+.repo-picker strong { font-size:12px; }.repo-picker small, .access-card small { margin-top:2px; color:var(--muted); font-size:10px; }
+.sidebar nav { margin-top:26px; }.caps { margin:0; color:#92919d; font-size:9px; font-weight:800; letter-spacing:.13em; }
+.sidebar nav .caps { padding:0 10px 9px; }.sidebar nav button { display:flex; width:100%; height:39px; gap:10px; align-items:center; padding:0 10px; border:0; border-radius:7px; background:transparent; color:#575661; font-size:12px; text-align:left; }
+.sidebar nav .nav-active { color:#5840db; background:#f0edff; font-weight:700; }
+.access-card { display:flex; gap:9px; margin-top:auto; padding:17px 7px; border-top:1px solid var(--line); }.access-icon { display:grid; width:22px; height:22px; place-items:center; border-radius:50%; color:#179b5e; background:#e6f7ed; }.access-card strong { margin:4px 0; font-size:10px; }
+.sidebar-cta { justify-content:center; height:37px; gap:7px; border:1px solid #ded9ff; border-radius:7px; color:#5a42d7; background:#f6f4ff; font-size:11px; font-weight:700; }
+
+/* Report content and metric cards. */
+.content { max-width:1080px; margin:auto; padding:42px 40px 90px; }.report-top, .section-heading { display:flex; justify-content:space-between; align-items:flex-start; }.crumb { gap:6px; margin:0 0 17px; color:#636271; font-size:11px; }.crumb span { color:#c8c7d0; }.report-top h1, .empty-report h1 { margin:0; font:400 36px/1.1 Georgia, serif; letter-spacing:-.04em; }.report-top em, .empty-report em { color:#6951e7; font-style:italic; }.subtitle { margin:9px 0 0; color:var(--muted); font-size:12px; }
+.download, .analyze-button { justify-content:center; gap:8px; padding:11px 13px; border:0; border-radius:7px; color:#fff; background:#201d36; font-size:11px; font-weight:700; }.download { margin-top:7px; border:1px solid var(--line); color:#37353e; background:#fff; }
+.summary-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin:34px 0 18px; }.summary-card { min-height:138px; padding:15px; border:1px solid var(--line); border-radius:10px; background:#fff; }.metric-icon { display:grid; width:30px; height:30px; place-items:center; border-radius:8px; }.violet { color:#7057f5; background:#f0edff; }.orange { color:#ec7b37; background:#fff0e7; }.cyan { color:#0d93be; background:#eafbff; }.green { color:#27a861; background:#e8f8ee; }.summary-card p { margin:13px 0 5px; color:#93929e; font-size:9px; font-weight:800; letter-spacing:.11em; }.summary-card strong { display:block; font:400 23px Georgia, serif; }.summary-card small { display:block; margin-top:6px; color:var(--muted); font-size:10px; }.summary-card small b { color:#1b9d64; }
+.insight-strip { display:grid; grid-template-columns:31px 1fr auto; gap:12px; align-items:center; padding:15px 17px; border:1px solid #e2ddff; border-radius:10px; background:#f2f0ff; }.insight-strip > span { color:#684ced; }.insight-strip strong, .insight-strip small { display:block; }.insight-strip strong { margin:4px 0; font-size:12px; }.insight-strip small { color:#6f6b88; font-size:10px; }.insight-strip button { display:flex; gap:5px; border:0; color:#5d45dc; background:transparent; font-size:10px; font-weight:700; }
+
+/* Lists, folder tree, technology stack, and pull requests. */
+.section-heading { align-items:end; margin:38px 0 13px; }.section-heading h2, .chat-head h2 { margin:5px 0 0; font:400 22px Georgia, serif; }.source-label { padding:5px 7px; border:1px solid var(--line); border-radius:99px; color:#918e9b; background:#fff; font-size:8px; font-weight:800; letter-spacing:.1em; }.activity-card, .structure-card, .stack-card, .pr-card { overflow:hidden; border:1px solid var(--line); border-radius:10px; background:#fff; }.activity-tabs { display:flex; height:45px; gap:23px; align-items:end; padding:0 16px; border-bottom:1px solid var(--line); color:var(--muted); font-size:11px; }.activity-tabs span { height:45px; padding-top:16px; }.selected-tab { border-bottom:2px solid var(--violet); color:var(--ink); font-weight:700; }.activity-tabs button { display:flex; gap:5px; margin:0 0 8px auto; padding:5px 7px; border:1px solid var(--line); border-radius:5px; color:var(--muted); background:#fff; font-size:9px; }
+.commit { display:grid; grid-template-columns:31px 1fr auto; gap:10px; align-items:center; padding:13px 17px; border-bottom:1px solid #f0eff4; }.commit:last-child, .stack-row:last-child, .pr-row:last-child { border:0; }.commit-mark { display:grid; width:26px; height:26px; place-items:center; border-radius:7px; color:#7057f5; background:#f0edff; }.commit strong, .commit small, .pr-row strong, .pr-row small { display:block; }.commit strong, .pr-row strong { font-size:11px; }.commit small, .pr-row small { margin-top:4px; color:var(--muted); font-size:9px; }.commit small b, .pr-number { color:#7962df; }.commit time, .pr-row time { color:#9998a3; font-size:9px; }
+.lower-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:17px; }.structure-card { display:grid; grid-template-columns:1fr 145px; min-height:236px; }.tree { padding:15px; font-size:11px; }.tree > div { display:flex; min-height:30px; gap:6px; align-items:center; }.tree svg { color:#7d65e1; }.tree-child { padding-left:19px; }.tree-child span { flex:1; }.tree-child small { color:#9b9aa4; font-size:9px; }.tree-side { padding:18px 10px; border-left:1px solid var(--line); text-align:center; }.tree-side > p { margin:0 0 12px; color:#9998a2; font-size:8px; letter-spacing:.1em; }.ring { display:grid; width:84px; height:84px; margin:auto; place-items:center; border-radius:50%; background:conic-gradient(#755af2 0 44%, #1fb0c7 44% 69%, #ee8a4d 69% 83%, #d9d7e5 83%); }.ring span { display:grid; width:63px; height:63px; place-items:center; border-radius:50%; background:#fff; font:400 16px Georgia, serif; }.ring small { color:#999; font:700 7px Arial; letter-spacing:.1em; }.tree-side > small { display:block; margin-top:12px; color:#777; font-size:9px; }
+.stack-card { padding:4px 14px; }.stack-row { display:grid; grid-template-columns:25px 1fr 16px; gap:8px; align-items:center; height:38px; border-bottom:1px solid #f0eff4; }.stack-row > span { display:grid; width:21px; height:21px; place-items:center; border-radius:5px; color:#fff; font-size:11px; font-weight:800; }.stack-row strong, .stack-row small { display:block; }.stack-row strong { font-size:10px; }.stack-row small { color:#999; font-size:8px; }.stack-row svg { color:#26a969; }.pr-row { display:grid; grid-template-columns:50px 1fr 58px 58px; gap:10px; align-items:center; min-height:55px; padding:0 17px; border-bottom:1px solid #f0eff4; }.pr-number { font:700 10px monospace; }.status { padding:4px; border:1px solid #c9eddc; border-radius:99px; color:#1a9460; background:#f1fbf6; font-size:8px; text-align:center; }.status.open { border-color:#ded8ff; color:#6a50e5; background:#f5f3ff; }
+
+/* Contextual assistant panel. */
+.chat-panel { position:fixed; top:66px; right:0; bottom:0; width:348px; display:flex; flex-direction:column; padding:25px 20px 16px; border-left:1px solid var(--line); background:#fff; }.chat-head { display:flex; align-items:start; justify-content:space-between; }.chat-head .caps { color:#755de4; }.icon-button { display:grid; width:29px; height:29px; place-items:center; border:1px solid var(--line); border-radius:6px; background:#fff; }.chat-context { gap:7px; margin:20px 0 13px; padding:8px; border:1px solid #dcefe4; border-radius:7px; color:#3b7c5a; background:#f4fbf7; font-size:9px; }.chat-context svg:last-child { margin-left:auto; }.messages { flex:1; overflow:auto; padding:3px 2px; }.message { display:flex; gap:7px; margin:10px 0; }.message p { margin:0; padding:10px; border-radius:8px; color:#454451; background:#f5f4f8; font-size:11px; line-height:1.5; }.message.you { justify-content:flex-end; }.message.you p { max-width:84%; color:#4a37aa; background:#eeeaff; }.bot-badge { display:grid; min-width:22px; height:22px; place-items:center; border-radius:6px; color:#644ce0; background:#edeaff; }.suggestions { display:flex; gap:5px; overflow:hidden; margin:12px 0 8px; }.suggestions button { padding:6px 8px; border:1px solid var(--line); border-radius:99px; color:#696876; background:#fff; font-size:9px; white-space:nowrap; }.chat-form { display:flex; align-items:end; padding:7px; border:1px solid #cbc8d4; border-radius:8px; }.chat-form textarea { width:100%; height:35px; border:0; outline:none; resize:none; background:transparent; font-size:11px; }.chat-form button { display:grid; width:28px; height:28px; place-items:center; border:0; border-radius:5px; color:#fff; background:#241f40; }.chat-foot { margin:8px 0 0; color:#aaa8b3; font-size:8px; text-align:center; }
+
+/* Repository dialog and first-run empty state. */
+.modal-shade { position:fixed; z-index:30; inset:0; display:grid; padding:18px; place-items:center; background:rgba(19,16,31,.46); backdrop-filter:blur(4px); }.repo-dialog { position:relative; width:min(455px, 100%); padding:32px; border-radius:13px; background:#fff; box-shadow:0 24px 80px rgba(0,0,0,.2); }.repo-dialog .close { position:absolute; top:16px; right:16px; border:0; }.dialog-icon { display:grid; width:41px; height:41px; margin-bottom:18px; place-items:center; border-radius:10px; color:#fff; background:#211e32; }.repo-dialog h2 { margin:7px 0; font:400 27px Georgia, serif; }.muted { color:var(--muted); font-size:11px; line-height:1.5; }.field-label { display:block; margin:21px 0 7px; font-size:10px; font-weight:700; }.repo-dialog input { width:100%; padding:11px; border:1px solid #d9d7df; border-radius:7px; outline-color:#7057f5; font-size:11px; }.analyze-button { width:100%; margin-top:11px; }.analyze-button:disabled { cursor:wait; opacity:.7; }.form-error { margin:8px 0 0; color:#b34242; font-size:10px; }.small-note { justify-content:center; gap:5px; margin:16px 0 0; color:#8b8994; font-size:9px; }.small-note svg { color:#1ba366; }.empty-report { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:520px; max-width:500px; margin:auto; text-align:center; }.empty-report .metric-icon { width:48px; height:48px; margin-bottom:19px; }.empty-report h1 { margin:8px 0; }.empty-report > p:not(.caps) { margin:0 0 20px; color:var(--muted); font-size:12px; line-height:1.55; }
+
+/* Responsive layout: hide fixed sidebars before the content becomes cramped. */
+@media (max-width:1150px) { .app { padding-right:0; }.chat-panel { display:none; }.content { max-width:960px; }.top-center { display:none; } }
+@media (max-width:780px) { .app { padding:55px 0 0; }.topbar { height:55px; }.sidebar { display:none; }.content { padding:27px 16px 55px; }.summary-grid { grid-template-columns:repeat(2, 1fr); }.lower-grid { grid-template-columns:1fr; }.report-top h1 { font-size:30px; }.report-top { gap:10px; }.download { white-space:nowrap; }.pr-row { grid-template-columns:43px 1fr 52px; }.pr-row time { display:none; } }
+@media (max-width:480px) { .summary-grid { gap:8px; }.summary-card { min-height:125px; padding:12px; }.insight-strip { grid-template-columns:27px 1fr; }.insight-strip button { display:none; }.activity-tabs { gap:12px; }.activity-tabs button { display:none; }.structure-card { grid-template-columns:1fr; }.tree-side, .commit time { display:none; }.repo-dialog { padding:25px 20px; } }
+
+/* A plain blue-and-green palette for a straightforward engineering tool. */
+:root { --muted:#64748b; --line:#dbe5ea; --paper:#f7faf9; --violet:#1976a2; }
+.app { background:var(--paper); }
+.sidebar nav .nav-active { color:#176c8e; background:#eaf5f8; }
+.sidebar-cta { border-color:#b8dce5; color:#176c8e; background:#eef8fa; }
+.report-top em, .empty-report em { color:#1976a2; }
+.download, .analyze-button { background:#176c8e; }
+.download { color:#245264; background:#fff; }
+.violet, .cyan, .commit-mark { color:#1976a2; background:#eaf5f8; }
+.orange, .green { color:#287258; background:#e8f5ed; }
+.insight-strip { border-color:#cde4df; background:#f1faf7; }
+.insight-strip > span { color:#287258; }
+.insight-strip small { color:#54736c; }
+.insight-strip button, .chat-head .caps { color:#176c8e; }
+.commit small b, .pr-number { color:#1976a2; }
+.tree svg { color:#1976a2; }
+.ring { background:conic-gradient(#1976a2 0 44%, #28856b 44% 69%, #5ba7bb 69% 83%, #d9e7e7 83%); }
+.message.you p { color:#176c8e; background:#eaf5f8; }
+.bot-badge { color:#287258; background:#e8f5ed; }
+.chat-form button { background:#176c8e; }
+.repo-dialog input { outline-color:#1976a2; }
+
+/* GitHub-inspired neutral surfaces, green primary actions, and compact lists. */
+:root { --ink:#1f2328; --muted:#59636e; --line:#d1d9e0; --paper:#f6f8fa; --violet:#fd8c73; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.topbar { background:#f6f8fa; backdrop-filter:none; }
+.sidebar, .chat-panel { background:#fff; }
+.sidebar nav .nav-active { color:#1f2328; background:#eaeef2; box-shadow:inset 3px 0 #fd8c73; }
+.analyze-button, .chat-form button, .header-link { color:#fff; background:#1f883d; border:1px solid #1f232826; border-radius:6px; }
+.header-link { padding:8px 12px; }
+.analyze-button:hover, .chat-form button:hover, .header-link:hover { background:#1a7f37; }
+.download, .repo-picker, .suggestions button, .icon-button { background:#f6f8fa; color:#1f2328; border-color:var(--line); border-radius:6px; }
+button:focus-visible, a:focus-visible, .tree:focus-visible { outline:2px solid #0969da; outline-offset:3px; }
+.report-top h1, .empty-report h1 { font:600 30px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; letter-spacing:-.025em; }
+.section-heading h2, .chat-head h2, .repo-dialog h2 { font-family:inherit; font-weight:600; font-size:19px; }
+.repository-summary { margin-top:28px; }
+.panel-heading { display:flex; justify-content:space-between; gap:12px; padding:14px 17px; border-bottom:1px solid var(--line); background:#f6f8fa; font-size:12px; font-weight:600; }
+.panel-heading span { color:var(--muted); font-weight:400; }
+.summary-row { display:flex; justify-content:space-between; gap:18px; padding:13px 17px; border-bottom:1px solid #d1d9e080; font-size:12px; }
+.summary-row:last-child { border:0; }
+.summary-row > span { color:var(--muted); }
+.summary-row strong { text-align:right; font-weight:500; }
+.activity-card, .structure-card, .stack-card, .pr-card { border-radius:6px; }
+.activity-tabs { background:#f6f8fa; align-items:center; }
+.activity-tabs a { margin-left:auto; color:#0969da; text-decoration:none; font-size:11px; }
+.commit, .pr-row { border-color:#d1d9e080; }
+.commit > div, .pr-row > div { min-width:0; overflow-wrap:anywhere; }
+.commit-mark, .violet { color:#59636e; background:#f6f8fa; }
+.commit small b, .pr-number, .tree svg { color:#0969da; }
+.lower-grid { grid-template-columns:1fr; }
+.structure-card { display:block; }
+.tree { max-height:460px; overflow:auto; padding:8px 0; }
+.tree > .tree-entry { width:max-content; min-width:100%; padding-right:18px; gap:8px; min-height:29px; white-space:nowrap; font:12px ui-monospace,SFMono-Regular,monospace; }
+.tree-entry:hover { background:#f6f8fa; }
+.tree-entry svg { flex-shrink:0; }
+.tree-entry small { color:var(--muted); }
+.stack-card { padding:0; background:#0d1117; border-color:#30363d; }
+.language-graph { display:block; width:100%; max-height:430px; }
+.language-bar { display:flex; height:8px; margin:0 24px 20px; border-radius:8px; overflow:hidden; }
+.language-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 24px; padding:0 24px 24px; }
+.language-legend > div { display:flex; align-items:center; gap:8px; color:#f0f6fc; font-size:12px; }
+.language-legend i { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.language-legend strong { overflow-wrap:anywhere; font-weight:500; }
+.language-legend span { color:#8b949e; margin-left:auto; }
+.stack-card > .muted { padding:20px; color:#8b949e; }
+.message.you p { color:#1f2328; background:#ddf4ff; }
+.message p { background:#f6f8fa; color:#1f2328; }
+.bot-badge { background:#f6f8fa; }
+.status.open { color:#1a7f37; border-color:#aceebb; background:#dafbe1; }
+.repo-dialog input { outline-color:#0969da; }
+@media (max-width:480px) { .language-legend { grid-template-columns:1fr; } .brand { font-size:10px; letter-spacing:.04em; } .summary-row { font-size:11px; } }
+
+/* GitHub dark default theme. */
+:root { color-scheme:dark; --ink:#e6edf3; --muted:#8b949e; --line:#30363d; --paper:#0d1117; }
+.topbar { background:#010409; }
+.sidebar, .chat-panel, .activity-card, .structure-card, .pr-card { background:var(--paper); }
+.panel-heading, .activity-tabs, .repo-dialog { background:#161b22; }
+.repo-dialog { border:1px solid var(--line); }
+.sidebar nav button, .crumb, .caps, .chat-foot { color:var(--muted); }
+.sidebar nav .nav-active { color:var(--ink); background:#21262d; }
+.download, .repo-picker, .suggestions button, .icon-button { color:var(--ink); background:#1a7f37; }
+.download:hover, .repo-picker:hover, .suggestions button:hover, .icon-button:hover { background:#47ba67; }
+.analyze-button, .chat-form button, .header-link { background:#238636; border-color:#ffffff1a; }
+.analyze-button:hover, .chat-form button:hover, .header-link:hover { background:#2ea043; }
+.summary-row, .commit, .pr-row, .chat-form { border-color:var(--line); }
+.commit-mark, .violet, .bot-badge, .message p { color:var(--ink); background:#161b22; }
+.tree-entry:hover { background:#161b22; }
+.activity-tabs a, .commit small b, .pr-number, .tree svg { color:#58a6ff; }
+.message.you p { color:#c9e6ff; background:#132e46; }
+.chat-context, .access-icon, .status.open { color:#3fb950; background:#23863626; border-color:#23863666; }
+.status { color:#bc8cff; background:#a371f726; border-color:#a371f766; }
+.repo-dialog input, .chat-form { background:#0d1117; color:var(--ink); border-color:var(--line); }
+.repo-dialog input { outline-color:#58a6ff; }
+input::placeholder, textarea::placeholder { color:var(--muted); }
+.form-error { color:#f85149; }
+button:focus-visible, a:focus-visible, .tree:focus-visible { outline-color:#58a6ff; }
+
+.section-heading, #structure { scroll-margin-top:85px; }
+.panel-heading a, .pr-row a, .collaborator-row a { color:#58a6ff; text-decoration:none; }
+.panel-heading a:hover, .pr-row a:hover, .collaborator-row a:hover { text-decoration:underline; }
+.section-note { margin:0; padding:17px; color:var(--muted); font-size:12px; line-height:1.6; }
+.collaborator-row { display:flex; align-items:center; gap:12px; padding:13px 17px; border-bottom:1px solid var(--line); font-size:12px; }
+.collaborator-row:last-child { border-bottom:0; }
+.collaborator-avatar { display:grid; place-items:center; width:30px; height:30px; flex-shrink:0; border-radius:50%; background:#21262d; color:var(--muted); }
+.collaborator-role { margin-left:auto; color:var(--muted); text-transform:capitalize; }
