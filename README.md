@@ -57,9 +57,3 @@ src/lib/api/repository.ts     Typed browser API client used by the dashboard
 src/app/globals.css           Dashboard styles and responsive layout
 src/app/layout.tsx            Root document layout and metadata
 ```
-
-## Important limitations
-
-- Without `GITHUB_TOKEN`, GitHub applies unauthenticated API rate limits.
-- Private repositories require the optional read-only token above. For a multi-user product, replace personal tokens with GitHub OAuth or a GitHub App installation flow.
-- The side assistant summarizes fetched report data. To answer detailed code questions with a language model, add an AI provider and pass it selected repository context.
