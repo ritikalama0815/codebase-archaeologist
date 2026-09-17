@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Codebase Archaeologist
 
-## Getting Started
+Codebase Archaeologist turns a public GitHub repository URL into a technical report.
 
-First, run the development server:
+## It reports the following:
+
+- Recent commits, authors, and dates
+- Recent pull requests and their status
+- Repository stars, forks, open issues, size, and default branch
+- A folder graph built from GitHub's recursive file tree
+- Languages detected by GitHub, shown as the technology stack
+- A print-friendly report that can be saved as a PDF from the browser print dialog
+
+All displayed repository facts are requested live from the GitHub REST API. The app does not clone, alter, or save a repository.
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open the local URL printed by Next.js, paste a public URL such as `https://github.com/vercel/next.js`, and select **Generate real report**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The important dependencies are:
 
-## Learn More
+- `next`, `react`, and `react-dom` — the web application framework and UI runtime.
+- `typescript` plus `@types/react`, `@types/node`, and `@types/react-dom` — type checking.
+- `tailwindcss` and `@tailwindcss/postcss` — CSS processing; this project also uses regular CSS in `src/app/globals.css`.
+- `lucide-react` — the interface icons.
+- `eslint` and `eslint-config-next` — linting.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Optional GitHub token
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Public repositories work without configuration, but GitHub will apply unauthenticated rate limits. To analyze private repositories that your token can read, create a fine-grained GitHub personal access token with read-only **Contents** and **Pull requests** permissions, then create `.env.local`:
 
-## Deploy on Vercel
+```bash
+GITHUB_TOKEN=github_pat_your_token_here
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Never prefix this variable with `NEXT_PUBLIC_`, commit `.env.local`, or place the token in `page.tsx`. The server route reads it safely and sends it only to GitHub.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Validation
+
+```bash
+npm run lint
+```
+
+## Project structure
+
+```text
+src/app/page.tsx              Interactive report dashboard and URL dialog
+src/app/api/analyze/route.ts  Server route that fetches and normalizes GitHub data
+src/lib/api/repository.ts     Typed browser API client used by the dashboard
+src/app/globals.css           Dashboard styles and responsive layout
+src/app/layout.tsx            Root document layout and metadata
+```
