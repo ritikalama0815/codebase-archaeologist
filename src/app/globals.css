@@ -244,3 +244,13 @@ button:focus-visible, a:focus-visible, .tree:focus-visible { outline-color:#58a6
 .collaborator-row:last-child { border-bottom:0; }
 .collaborator-avatar { display:grid; place-items:center; width:30px; height:30px; flex-shrink:0; border-radius:50%; background:#21262d; color:var(--muted); }
 .collaborator-role { margin-left:auto; color:var(--muted); text-transform:capitalize; }
+
+.message p { white-space:pre-wrap; overflow-wrap:anywhere; }
+.chat-progress, .chat-error { padding:10px; font-size:12px; line-height:1.5; }
+.chat-progress { color:var(--muted); }
+.chat-error { color:#ffa198; background:#f851491a; border:1px solid #f8514940; border-radius:6px; }
+.chat-form button:disabled, .suggestions button:disabled { opacity:.5; cursor:not-allowed; }
+@media (max-width:1150px) {
+  .chat-panel { position:static; display:flex; width:auto; min-height:380px; margin:0 24px 32px; border:1px solid var(--line); border-radius:6px; }
+  .chat-panel .messages { max-height:420px; }
+}
