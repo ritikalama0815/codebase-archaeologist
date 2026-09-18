@@ -57,3 +57,21 @@ src/lib/api/repository.ts     Typed browser API client used by the dashboard
 src/app/globals.css           Dashboard styles and responsive layout
 src/app/layout.tsx            Root document layout and metadata
 ```
+
+## Gemini chat
+
+Set the following in `.env` or `.env.local`, next to `package.json`, then restart the development server:
+
+```dotenv
+GEMINI_API_KEY=your_key_here
+# Optional model override:
+GEMINI_MODEL=gemini-3.1-flash-lite
+```
+
+Create a key in [Google AI Studio](https://aistudio.google.com/apikey). The key stays on the server; do not prefix it with `NEXT_PUBLIC_`. Environment files are ignored by Git. In a deployment, configure the same variables in your hosting provider's environment settings.
+
+After generating a repository report, ask a question in the chat. `/api/chat` sends the report's metadata, recent commits, PRs, issues, languages, up to 150 file paths, and the last ten conversation messages to Gemini. No source-code contents or diffs are fetched. The assistant is instructed to acknowledge missing context. Switching repositories clears the conversation.
+
+The default model has a free tier, subject to Google's account and model quotas. Using an API key from a billed project may incur charges; this app does not change billing settings. Quota and connection errors appear in the chat, and failed questions can be sent again.
+
+Before exposing this personal app publicly, add authentication and a shared rate limit to the chat endpoint to control use of your API quota.

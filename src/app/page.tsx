@@ -7,11 +7,12 @@
  */
 
 import {
-  ArrowRight, Check, ChevronDown, Download,
+  Check, ChevronDown, Download,
   File, FolderGit2, GitBranch, GitCommitHorizontal, GitMerge, LayoutDashboard,
   CircleDot, MessageSquare, Plus, Send, X, MessageCircle
 } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { askRepositoryQuestion, type ChatTurn } from "@/lib/api/chat";
 import {
   analyzeRepository as requestRepositoryReport,
   type RepositoryReport,
@@ -66,7 +67,6 @@ function RepositoryDialog({ close, onAnalyze }: {
         <input id="repo-url" value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://github.com/owner/repository" />
         <button className="analyze-button" onClick={submit} disabled={loading}>
           {loading ? "Analyzing repository…" : "Generate report"}
-          <ArrowRight size={17} />
         </button>
         {error && <p className="form-error">{error}</p>}
       </section>
@@ -93,11 +93,27 @@ export default function Home() {
   const [report, setReport] = useState<RepositoryReport | null>(null);
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [chatLoading, setChatLoading] = useState(false);
+  const [chatError, setChatError] = useState("");
+  const chatRequest = useRef<AbortController | null>(null);
+  const chatHistory = useRef<ChatTurn[]>([]);
+  const messagesEnd = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messagesEnd.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [messages, chatLoading, chatError]);
+  useEffect(() => () => chatRequest.current?.abort(), []);
 
   /** Requests the live report and resets the contextual assistant message. */
   async function analyzeRepository(url: string) {
     const result = await requestRepositoryReport(url);
 
+    chatRequest.current?.abort();
+    chatRequest.current = null;
+    chatHistory.current = [];
+    setChatLoading(false);
+    setChatError("");
+    setQuestion("");
     setReport(result);
     setMessages([{
       who: "chat assistant",
@@ -105,17 +121,33 @@ export default function Home() {
     }]);
   }
 
-  /** Adds a local, report-grounded assistant response to the conversation. */
-  function askRepository(event: FormEvent) {
+  /** Ask Gemini using the current report and successful conversation turns. */
+  async function askRepository(event: FormEvent) {
     event.preventDefault();
-    if (!question.trim()) return;
-
-    const answer = report
-      ? `This report contains ${report.commits.length} recent commits, ${report.pullRequests.length} pull requests, and ${report.folders.length} top-level directories. Connect an AI provider next for natural-language code explanations.`
-      : "Analyze a repository first, then I can answer from its live data.";
-
-    setMessages((current) => [...current, { who: "you", text: question }, { who: "chat assistant", text: answer }]);
+    const prompt = question.trim();
+    if (!prompt || !report || chatRequest.current) return;
+    const controller = new AbortController();
+    chatRequest.current = controller;
+    setChatLoading(true);
+    setChatError("");
+    setMessages(current => [...current, { who: "you", text: prompt }]);
     setQuestion("");
+    try {
+      const answer = await askRepositoryQuestion(prompt, report, chatHistory.current, controller.signal);
+      if (chatRequest.current !== controller) return;
+      chatHistory.current = [...chatHistory.current, { role: "user", text: prompt }, { role: "model", text: answer }].slice(-10) as ChatTurn[];
+      setMessages(current => [...current, { who: "chat assistant", text: answer }]);
+    } catch (error) {
+      if (controller.signal.aborted || chatRequest.current !== controller) return;
+      setChatError(error instanceof Error ? error.message : "Unable to get an answer. Please try again.");
+      setMessages(current => current.slice(0, -1));
+      setQuestion(prompt);
+    } finally {
+      if (chatRequest.current === controller) {
+        chatRequest.current = null;
+        setChatLoading(false);
+      }
+    }
   }
 
   /** Updates the selected navigation item and scrolls to its report section. */
@@ -308,23 +340,26 @@ export default function Home() {
           <Check size={14} />
         </div>
         
-        <div className="messages">{messages.map((message, index) => <div className={`message ${message.who}`} key={index}>{message.who === "chat assistant" && <span className="bot-badge">
+        <div className="messages" role="log" aria-live="polite" aria-label="Repository conversation">{messages.map((message, index) => <div className={`message ${message.who}`} key={index}>{message.who === "chat assistant" && <span className="bot-badge">
           <MessageCircle size={13} />
           </span>}
           <p>{message.text}</p>
           </div>)}
+          {chatLoading && <p className="chat-progress" role="status">Gemini is thinking…</p>}
+          {chatError && <p className="chat-error" role="alert">{chatError}</p>}
+          <div ref={messagesEnd} />
         </div>
 
         <div className="suggestions">
-          <button onClick={() => setQuestion("What changed recently?")}>What changed recently?</button>
-          <button onClick={() => setQuestion("Which languages are used?")}>Which languages are used?</button>
+          <button disabled={!report || chatLoading} onClick={() => setQuestion("What changed recently?")}>What changed recently?</button>
+          <button disabled={!report || chatLoading} onClick={() => setQuestion("Which languages are used?")}>Which languages are used?</button>
         </div>
 
         <form className="chat-form" onSubmit={askRepository}>
-          <textarea className="chat-input" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Ask about this repository..." />
-            <button aria-label="Send"><Send size={16} /></button>
+          <textarea aria-label="Question about the repository" maxLength={2000} disabled={!report || chatLoading} className="chat-input" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Ask about this repository..." />
+            <button disabled={!report || chatLoading || !question.trim()} aria-label={chatLoading ? "Waiting for Gemini" : "Send"}><Send size={16} /></button>
         </form>
-
+        <p className="chat-foot">Powered by Gemini, answers uses report not source code.</p>
 
       </aside>
 
