@@ -7,7 +7,7 @@
  */
 
 import {
-  ArrowRight, Check, ChevronDown, Download,
+  Check, ChevronDown, Download,
   File, FolderGit2, GitBranch, GitCommitHorizontal, GitMerge, LayoutDashboard,
   CircleDot, MessageSquare, Plus, Send, X, MessageCircle
 } from "lucide-react";
@@ -67,7 +67,6 @@ function RepositoryDialog({ close, onAnalyze }: {
         <input id="repo-url" value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://github.com/owner/repository" />
         <button className="analyze-button" onClick={submit} disabled={loading}>
           {loading ? "Analyzing repository…" : "Generate report"}
-          <ArrowRight size={17} />
         </button>
         {error && <p className="form-error">{error}</p>}
       </section>
@@ -360,7 +359,7 @@ export default function Home() {
           <textarea aria-label="Question about the repository" maxLength={2000} disabled={!report || chatLoading} className="chat-input" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Ask about this repository..." />
             <button disabled={!report || chatLoading || !question.trim()} aria-label={chatLoading ? "Waiting for Gemini" : "Send"}><Send size={16} /></button>
         </form>
-        <p className="chat-foot">Powered by Gemini · Answers use report data, not source code.</p>
+        <p className="chat-foot">Powered by Gemini, answers uses report not source code.</p>
 
       </aside>
 
